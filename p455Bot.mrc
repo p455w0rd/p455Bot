@@ -47,6 +47,7 @@ on *:sockread:bot*: {
   if ($bmsg($4) == !restart && ($getnick($1) == $me)) { sockwrite -nt $sockname QUIT Restarting... | sockclose bot | .timer 1 1 bot | .timer 1 2 bjoin $botchan }
   if ($bmsg($4) == !cycle && ($getnick($1) == $me)) { sockwrite -nt $sockname PART $5 | sockwrite -n bot_x JOIN $5- } 
   if ($bmsg($4) == !kick && ($getnick($1) == $me)) { sockwrite -nt $sockname KICK $botchan $5 :moo }
+  if ($bmsg($4) == !src) { sockwrite -nt $sockname PRIVMSG $botchan : $+ https://github.com/p455w0rd/p455Bot/blob/master/p455Bot.mrc }
   if ($+(:,$chr(1),version,$chr(1)) isin $4) { sockwrite -tn $sockname notice $getnick($1) : $+ $chr(1) $+ VERSION p455Bot - A Socket Driven IRC Bot - v0.2 by p455w0rd $chr(1) | goto done }
   if ($+(:,$chr(1),ping) isin $4 && $3 == PRIVMSG && $bmsg($1) != !pingme) { sockwrite -tn $sockname notice $getnick($1) $+(:,$chr(1),PING) $+($ctime,$chr(1)) | goto done }
   if ($+(:,$chr(1),ping) isin $4 && $2 == NOTICE && $bmsg($1) != !pingme) { sockwrite -tn $sockname privmsg $botchan :PING for $getnick($1) $+ : $duration($calc($ctime - $left($5,$calc($len($5) - 1)))) | goto done }
